@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{course.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{course.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/courses/add}" th:text="#{course.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:if="${courses.empty}" th:text="#{course.list.empty}" />
+            <div th:if="${!courses.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{course.id.label}" scope="col" />
+                            <th th:text="#{course.courseName.label}" scope="col" />
+                            <th th:text="#{course.description.label}" scope="col" />
+                            <th th:text="#{course.teacher.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="course : ${courses}">
+                            <td th:text="${course.id}" />
+                            <td th:text="${course.courseName}" />
+                            <td th:text="${course.description}" />
+                            <td th:text="${course.teacher}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/courses/edit/{id}(id=${course.id})}" th:text="#{course.list.edit}" class="btn btn-sm btn-info" />
+                                    <form th:action="@{/courses/delete/{id}(id=${course.id})}"
+                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                                        <button th:text="#{course.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

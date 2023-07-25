@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{teacher.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{teacher.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/teachers/add}" th:text="#{teacher.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:if="${teachers.empty}" th:text="#{teacher.list.empty}" />
+            <div th:if="${!teachers.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{teacher.id.label}" scope="col" />
+                            <th th:text="#{teacher.firstName.label}" scope="col" />
+                            <th th:text="#{teacher.lastName.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="teacher : ${teachers}">
+                            <td th:text="${teacher.id}" />
+                            <td th:text="${teacher.firstName}" />
+                            <td th:text="${teacher.lastName}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/teachers/edit/{id}(id=${teacher.id})}" th:text="#{teacher.list.edit}" class="btn btn-sm btn-info" />
+                                    <form th:action="@{/teachers/delete/{id}(id=${teacher.id})}"
+                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                                        <button th:text="#{teacher.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
